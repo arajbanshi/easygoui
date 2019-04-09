@@ -1,0 +1,6 @@
+<div *ngIf="messageService.messages.length">
+
+  <h2 style="color: red">Error!</h2>
+  <div *ngFor='let message of messageService.messages' style="color: red"> {{message}} </div>
+  <button class="clear" (click)="messageService.clear()">clear</button>
+</div>

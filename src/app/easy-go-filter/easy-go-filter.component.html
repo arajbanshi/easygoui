@@ -1,0 +1,279 @@
+<div class="container">
+  <div>
+      <form (ngSubmit)="onSubmit()" #easyGoForm="ngForm">
+          <div class="form-group" [hidden]="true">
+                <label for="searchName">Name</label>
+                <input type="text" class="form-control" id="searchName" [(ngModel)]="model.searchName" name="searchName">
+          </div>
+          
+          <div class="form-group">
+              <input [(ngModel)]="fhvSelected" id="selectFhv" name="selectFhv" type="checkbox">FHV (Lyft, Uber etc...)
+              <br/>
+              <input [(ngModel)]="greenCabSelected" id="selectGreenCab" name="selectGreenCab" type="checkbox">Green Cab
+              <br/>
+              <input [(ngModel)]="yellowCabSelected" id="selectYellowCab" name="selectYellowCab" type="checkbox">Yellow Cab
+          </div>
+
+          <div class="form-group">
+            <label for="fromBorough">From</label>
+            <select class="form-control" id="fromBorough" [(ngModel)]="model.fromBorough" name="fromBorough">
+                <option selected value="">(Please select a location)</option>
+                <option *ngFor="let borough of boroughs" [value]="borough.id">{{borough.borough}} ({{borough.taxiZone}})</option>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="toBorough">To</label>
+            <select class="form-control" id="toBorough" [(ngModel)]="model.toBorough" name="toBorough"> 
+                <option selected value="">(Please select a location)</option>
+                <option *ngFor="let borough of boroughs" [value]="borough.id">{{borough.borough}} ({{borough.taxiZone}})</option>
+            </select>
+          </div>
+      
+          <div class="form-group">
+            <label for="fromDate">Date</label>
+            <input type="text" bsDatepicker class="form-control" id="fromDate" [(ngModel)]="model.fromDate" name="fromDate">
+          </div>
+      
+          <button type="submit" class="btn btn-success" [disabled]="!easyGoForm.form.valid">Update</button>
+      
+        </form>
+  </div>
+  <br/>
+  <br/>
+  <br/>
+  <div>
+      <div [hidden]="!submitted">
+          <div class="row">
+            <div [hidden]="!fhvSelected" class="col-sm-4">
+                <h3>FHV</h3>
+                <div class="row">
+                    <div class="col-xs-3">From:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.from }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">To:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.to }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Cost&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ fhvOut.averageCost ? (fhvOut.averageCost | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Time Taken&nbsp;(mins):</div>
+                    <div class="col-xs-3">{{ fhvOut.averageTime ? (fhvOut.averageTime | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Distance&nbsp;(miles):</div>
+                    <div class="col-xs-3">{{ fhvOut.averageDistance ? (fhvOut.averageDistance | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. Passanger count:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.averagePassangerCount ? (fhvOut.averagePassangerCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. tip&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ fhvOut.averageTip ? (fhvOut.averageTip | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. toll amount&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ fhvOut.averageTollAmount ? (fhvOut.averageTollAmount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">morning trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.morningTripsCount ? (fhvOut.morningTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">afternoon trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.afternoonTripsCount ? (fhvOut.afternoonTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">evening trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.eveningTripsCount ? (fhvOut.eveningTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Monday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.mondayTripsCount ? (fhvOut.mondayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Tuesday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.tuesdayTripsCount ? (fhvOut.tuesdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Wednesday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.wednesdayTripsCount ? (fhvOut.wednesdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Thursday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.thursdayTripsCount ? (fhvOut.thursdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Friday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.fridayTripsCount ? (fhvOut.fridayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Saturday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.saturdayTripsCount ? (fhvOut.saturdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Sunday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ fhvOut.sundayTripsCount ? (fhvOut.sundayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+            </div>
+            <div [hidden]="!greenCabSelected" class="col-sm-4">
+                <h3>Green cab</h3>
+                <div class="row">
+                    <div class="col-xs-3">From:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.from }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">To:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.to }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Cost&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ greenCabOut.averageCost ? (greenCabOut.averageCost | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Time Taken&nbsp;(mins):</div>
+                    <div class="col-xs-3">{{ greenCabOut.averageTime ? (greenCabOut.averageTime | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Distance&nbsp;(miles):</div>
+                    <div class="col-xs-3">{{ greenCabOut.averageDistance ? (greenCabOut.averageDistance | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. Passanger count:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.averagePassangerCount ? (greenCabOut.averagePassangerCount | number:0) : 'no data available'  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. tip&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ greenCabOut.averageTip ? (greenCabOut.averageTip | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. toll amount&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ greenCabOut.averageTollAmount ? (greenCabOut.averageTollAmount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">morning trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.morningTripsCount ? (greenCabOut.morningTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">afternoon trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.afternoonTripsCount ? (greenCabOut.afternoonTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">evening trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.eveningTripsCount ? (greenCabOut.eveningTripsCount | number:0) : 'no data available'  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Monday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.mondayTripsCount ? (greenCabOut.mondayTripsCount | number:0) : 'no data available'  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Tuesday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.tuesdayTripsCount ? (greenCabOut.tuesdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Wednesday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.wednesdayTripsCount ? (greenCabOut.wednesdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Thursday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.thursdayTripsCount ? (greenCabOut.thursdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Friday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.fridayTripsCount ? (greenCabOut.fridayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Saturday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.saturdayTripsCount ? (greenCabOut.saturdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Sunday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ greenCabOut.sundayTripsCount ? (greenCabOut.sundayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+            </div>
+            <div [hidden]="!yellowCabSelected" class="col-sm-4">
+                <h3>Yellow cab</h3>
+                <div class="row">
+                    <div class="col-xs-3">From:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.from }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">To:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.to }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Cost&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ yellowCabOut.averageCost ? (yellowCabOut.averageCost | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Time Taken&nbsp;(mins):</div>
+                    <div class="col-xs-3">{{ yellowCabOut.averageTime ? (yellowCabOut.averageTime | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Distance&nbsp;(miles):</div>
+                    <div class="col-xs-3">{{ yellowCabOut.averageDistance ? (yellowCabOut.averageTime | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. Passanger count:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.averagePassangerCount ? (yellowCabOut.averagePassangerCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. tip&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ yellowCabOut.averageTip ? (yellowCabOut.averageTip | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">avg. toll amount&nbsp;(Dollars):</div>
+                    <div class="col-xs-3">{{ yellowCabOut.averageTollAmount ? (yellowCabOut.averageTollAmount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">morning trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.morningTripsCount ? (yellowCabOut.morningTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">afternoon trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.afternoonTripsCount ? (yellowCabOut.afternoonTripsCount | number:0) : 'no data available'  }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">evening trips:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.eveningTripsCount ? (yellowCabOut.eveningTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Monday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.mondayTripsCount ? (yellowCabOut.mondayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Tuesday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.tuesdayTripsCount ? (yellowCabOut.tuesdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Wednesday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.wednesdayTripsCount ? (yellowCabOut.wednesdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Thursday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.thursdayTripsCount ? (yellowCabOut.thursdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Friday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.fridayTripsCount ? (yellowCabOut.fridayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Saturday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.saturdayTripsCount ? (yellowCabOut.saturdayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-3">Sunday:&nbsp;&nbsp;</div>
+                    <div class="col-xs-3">{{ yellowCabOut.sundayTripsCount ? (yellowCabOut.sundayTripsCount | number:0) : 'no data available' }}</div>
+                </div>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
+<br/>
+<br/>
+<br/>
